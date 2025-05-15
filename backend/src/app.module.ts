@@ -26,15 +26,15 @@ import { recipeResolvers } from './graphql/resolvers/recipe.resolver';
         {
           // This plugin injects the PrismaService into context
           requestDidStart: () => {
-            return {
+            return Promise.resolve({
               willResolveField({ context }) {
                 if (!context.prisma) {
                   // Inject the singleton PrismaService instance
-                  context.prisma = module.get(PrismaService);
+                  context.prisma = AppModule.module.get(PrismaService);
                 }
                 return null;
               },
-            };
+            });
           },
         },
       ],

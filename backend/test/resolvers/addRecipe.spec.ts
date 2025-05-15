@@ -3,7 +3,19 @@ import { typeDefs } from '../../src/graphql/schema';
 import { recipeResolvers } from '../../src/graphql/resolvers/recipe.resolver';
 import { PrismaService } from '../../src/prisma/prisma.service';
 
-// Mock PrismaService
+// Define types that combine Prisma client methods with Jest mock methods
+type MockPrismaClient = {
+  recipe: {
+    create: jest.Mock;
+    findMany: jest.Mock;
+    findUnique: jest.Mock;
+  };
+  ingredient: {
+    findUnique: jest.Mock;
+  };
+};
+
+// Create mock with Jest mock functions
 const mockPrismaService = {
   recipe: {
     create: jest.fn(),
@@ -13,7 +25,7 @@ const mockPrismaService = {
   ingredient: {
     findUnique: jest.fn(),
   },
-} as unknown as PrismaService;
+} as MockPrismaClient & PrismaService;
 
 describe('Add Recipe Resolver', () => {
   let server: ApolloServer;
